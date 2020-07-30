@@ -13,6 +13,8 @@ var everyHour = ["12am", "1am", "2am", "3am", "4am", "5am", "6am", "7am", "8am",
 
 var timer = setInterval(checkTime, 1000);
 
+//Used for testing color changes for textareas at the turn of an hour. (9th index is 9am in everyHour array)
+var testCounter = 9;
 
 $(".saveBtn").click(function() {
 
@@ -44,7 +46,10 @@ function checkTime() {
     //Update time on jumbotron
     $("#currentDay").text(moment().format('MMMM Do YYYY, h:mm:ssa'));
 
+    testCounter == 17 ? testCounter = 9 : testCounter++;
+
     let hour = moment().format('ha');
+    //let hour = everyHour[testCounter];
     let hourIndex = everyHour.indexOf(hour);
 
     //Update textarea background colors
@@ -61,12 +66,14 @@ function checkTime() {
             $(id).addClass("present");
         }
         else if(i > hourIndex){
+            $(id).removeClass("past");
             $(id).addClass("future");
         }
     }
 }
 
-function renderSchedule() {
+//Posts schedule from local storage
+function postSchedule() {
 
     let schedule = JSON.parse(localStorage.getItem("Schedule"));
 
@@ -77,4 +84,4 @@ function renderSchedule() {
 
 }
 
-renderSchedule()
+postSchedule()
